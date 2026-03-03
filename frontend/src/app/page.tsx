@@ -7,6 +7,7 @@ import ImagePreview from "../components/ImagePreview";
 import PaletteDisplay from "../components/PaletteDisplay";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { Palette } from "../types/palette";
+import { extractPalette } from "../utils/api";
 
 export default function Home() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -14,25 +15,20 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const handleFileSelect = async (file: File) => {
-    const url = URL.createObjectURL(file);
-    setImageUrl(url);
+  const url = URL.createObjectURL(file);
+  setImageUrl(url);
+  setLoading(true);
 
-    setLoading(true);
-
-    // TEMP fake palette
-    setTimeout(() => {
-      setPalette({
-        colors: [
-          { hex: "#FF5733", rgb: "255, 87, 51" },
-          { hex: "#33FF57", rgb: "51, 255, 87" },
-          { hex: "#3357FF", rgb: "51, 87, 255" },
-          { hex: "#F1C40F", rgb: "241, 196, 15" },
-          { hex: "#8E44AD", rgb: "142, 68, 173" },
-        ],
-      });
-      setLoading(false);
-    }, 1000);
-  };
+  try {
+    const data = await extractPalette(file);
+    setPalette(data);
+  } catch (error) {
+    console.error(error);
+    alert("Error extracting palette");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <>
