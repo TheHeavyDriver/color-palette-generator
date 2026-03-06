@@ -32,6 +32,12 @@ export default function ColorCard({ color }: ColorCardProps) {
 
       <p className="font-mono text-sm">{color.hex}</p>
       <p className="text-xs text-gray-500">{color.rgb}</p>
+      <p className="text-xs mt-1">
+        Contrast: 
+        <span className="font-semibold ml-1">
+          {color.contrast}
+        </span>
+      </p>
 
       <button
         onClick={copyColor}

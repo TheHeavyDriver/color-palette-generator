@@ -1,8 +1,9 @@
 export interface Color {
-  hex: string;
-  rgb: string;
+  hex: string
+  rgb: string
+  contrast: string
 }
 
 export interface Palette {
-  colors: Color[];
+  colors: Color[]
 }
