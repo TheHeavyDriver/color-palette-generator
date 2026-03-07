@@ -2,7 +2,7 @@ import "./globals.css";
 import { ReactNode } from "react";
 
 export const metadata = {
-  title: "PaletteLab",
+  title: "Palettrixa",
   description: "Extract accessible color palettes from images",
 };
 
