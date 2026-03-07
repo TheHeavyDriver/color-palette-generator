@@ -2,7 +2,7 @@ export async function extractPalette(file: File) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch("https://palettrixa.onrender.com/extract-palette", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/extract-palette`, {
     method: "POST",
     body: formData,
   });
