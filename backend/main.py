@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import pillow_heif
 import io
+import numpy as np
 
 from services.preprocessing import preprocess_image
 from services.clustering import extract_dominant_colors
@@ -43,8 +44,32 @@ async def extract_palette(file: UploadFile = File(...)):
     # Resize very large mobile photos
     image.thumbnail((800, 800))
 
-    pixels = preprocess_image(image)
+    import numpy as np
+
+    pixels = np.array(image)
+    pixels = preprocess_image(pixels)
     colors = extract_dominant_colors(pixels)
     palette = format_palette(colors)
 
     return {"colors": palette}
+    @app.post("/extract-palette")
+async def extract_palette(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+
+        image = Image.open(io.BytesIO(contents)).convert("RGB")
+        image.thumbnail((800, 800))
+
+        import numpy as np
+        pixels = np.array(image)
+
+        pixels = preprocess_image(pixels)
+        colors = extract_dominant_colors(pixels)
+        palette = format_palette(colors)
+
+        return {"colors": palette}
+
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return {"error": str(e)}
