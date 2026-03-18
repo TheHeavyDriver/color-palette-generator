@@ -15,10 +15,17 @@ export async function extractPalette(file: File) {
   console.log("RAW RESPONSE:", text);
 
   if (!response.ok) {
-    const err = await response.text();
-    console.error("Backend error:", err);
-    throw new Error(err);
+    console.error("Backend error:", text);
+    throw new Error(text);
   }
 
-  return response.json();
+  // ✅ FIX: parse manually (do NOT call response.json again)
+  const data = JSON.parse(text);
+
+  // ✅ Handle both formats (array OR {colors: []})
+  if (Array.isArray(data)) {
+    return { colors: data };
+  }
+
+  return data;
 }
