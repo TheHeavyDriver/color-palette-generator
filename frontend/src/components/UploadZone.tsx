@@ -39,7 +39,7 @@ export default function UploadZone({ onFileSelect }: UploadZoneProps) {
     >
       <input
         type="file"
-        accept="image/png, image/jpeg"
+        accept="image/png, image/jpeg, image/heic"
         className="hidden"
         id="fileUpload"
         onChange={(e) => {
